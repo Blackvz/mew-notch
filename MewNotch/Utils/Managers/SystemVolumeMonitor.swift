@@ -63,7 +63,7 @@ class SystemVolumeMonitor {
         let status = AudioObjectAddPropertyListener(
             AudioObjectID(kAudioObjectSystemObject),
             &propertyAddress,
-            defaultOutputDevicePropertyListener,
+            defaultOutputDevicePropertyListener!,
             nil
         )
         
@@ -82,7 +82,7 @@ class SystemVolumeMonitor {
         AudioObjectRemovePropertyListener(
             AudioObjectID(kAudioObjectSystemObject),
             &propertyAddress,
-            defaultOutputDevicePropertyListener,
+            defaultOutputDevicePropertyListener!,
             nil
         )
     }
@@ -121,7 +121,7 @@ class SystemVolumeMonitor {
             let volumeStatus = AudioObjectAddPropertyListener(
                 defaultOutputDeviceID,
                 &propertyAddress,
-                volumePropertyListener,
+                volumePropertyListener!,
                 nil
             )
             
@@ -141,7 +141,7 @@ class SystemVolumeMonitor {
             let muteStatus = AudioObjectAddPropertyListener(
                 defaultOutputDeviceID,
                 &propertyAddress,
-                mutedPropertyListener,
+                mutedPropertyListener!,
                 nil
             )
             
@@ -167,7 +167,7 @@ class SystemVolumeMonitor {
             AudioObjectRemovePropertyListener(
                 defaultOutputDeviceID,
                 &propertyAddress,
-                volumePropertyListener,
+                volumePropertyListener!,
                 nil
             )
         }
@@ -183,7 +183,7 @@ class SystemVolumeMonitor {
             AudioObjectRemovePropertyListener(
                 defaultOutputDeviceID,
                 &propertyAddress,
-                mutedPropertyListener,
+                mutedPropertyListener!,
                 nil
             )
         }

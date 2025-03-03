@@ -32,9 +32,9 @@ struct ClipboardHistoryView: View {
             .frame(maxHeight: 300)
         }
         .frame(width: 300)
-        .background(Color.black.opacity(0.9))
+        .background(Color.black)
         .cornerRadius(10)
-        .shadow(radius: 5)
+        .shadow(color: .white.opacity(0.3), radius: 5)
         .padding(.top, 5)
         .animation(.easeInOut, value: clipboardManager.clipboardItems.count)
     }

@@ -122,6 +122,9 @@ struct CollapsedNotchView: View {
         .shadow(
             radius: isHovered ? 5 : 0
         )
+        .onHover { hovering in
+            print("CollapsedNotchView hover: \(hovering)")
+        }
         .onReceive(
             defaultsManager.objectWillChange
         ) {

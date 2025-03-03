@@ -52,10 +52,19 @@ class ClipboardManager: ObservableObject {
         // Only process if the pasteboard has changed
         if currentChangeCount != lastChangeCount {
             lastChangeCount = currentChangeCount
+            print("Pasteboard change detected: \(currentChangeCount)")
             
             if let string = pasteboard.string(forType: .string), !string.isEmpty {
                 addClipboardItem(string)
+            } else {
+                print("No string content in pasteboard")
             }
+        }
+        
+        // For testing, if clipboard is empty, add a test item
+        if clipboardItems.isEmpty {
+            print("Adding test clipboard item")
+            addClipboardItem("Test clipboard item")
         }
     }
     

@@ -23,21 +23,21 @@ struct NotchView: View {
             HStack {
                 Spacer()
                 
-                ZStack(alignment: .top) {
+                VStack(spacing: 0) {
                     CollapsedNotchView(
                         isHovered: isHovered
                     )
                     .onHover { isHovered in
-                        withAnimation {
+                        print("Notch hover state changed to: \(isHovered)")
+                        print("Current clipboard items: \(clipboardManager.clipboardItems.count)")
+                        withAnimation(.easeInOut(duration: 0.2)) {
                             self.isHovered = isHovered
                         }
                     }
                     
                     if isHovered && !clipboardManager.clipboardItems.isEmpty {
                         ClipboardHistoryView()
-                            .offset(y: 30) // Position below the notch
                             .transition(.opacity)
-                            .zIndex(100)
                     }
                 }
                     

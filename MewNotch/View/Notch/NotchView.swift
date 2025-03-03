@@ -15,6 +15,7 @@ struct NotchView: View {
     @State var isExpanded: Bool = false
     
     @State var timer: Timer? = nil
+    @State var isHoveringClipboard: Bool = false
     
     @ObservedObject private var clipboardManager = ClipboardManager.shared
     
@@ -33,8 +34,23 @@ struct NotchView: View {
                     .onHover { hovering in
                         print("Notch hover state changed to: \(hovering)")
                         print("Current clipboard items: \(clipboardManager.clipboardItems.count)")
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            self.isHovered = hovering
+                        
+                        if hovering {
+                            // When hovering starts, update immediately
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                self.isHovered = true
+                            }
+                        } else {
+                            // When hover ends, delay closing to allow moving to clipboard menu
+                            // Cancel any existing timer
+                            timer?.invalidate()
+                            
+                            // Create new timer with short delay
+                            timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { _ in
+                                withAnimation(.easeInOut(duration: 0.2)) {
+                                    self.isHovered = false
+                                }
+                            }
                         }
                     }
                     
@@ -52,9 +68,23 @@ struct NotchView: View {
                         ClipboardHistoryView()
                             .offset(y: 40) // Position below the notch
                             .onHover { hovering in
-                                // Keep the hover state true when hovering over the clipboard history
+                                // When hovering over clipboard history
                                 if hovering {
-                                    self.isHovered = true
+                                    // Cancel any existing timer to close
+                                    timer?.invalidate()
+                                    
+                                    // Keep menu open
+                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                        self.isHovered = true
+                                    }
+                                } else {
+                                    // When hover ends on clipboard history, start timer to close
+                                    timer?.invalidate()
+                                    timer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { _ in
+                                        withAnimation(.easeInOut(duration: 0.2)) {
+                                            self.isHovered = false
+                                        }
+                                    }
                                 }
                             }
                         Spacer()
@@ -82,6 +112,7 @@ struct NotchView: View {
         .onDisappear {
             // Remove observer when view disappears
             NotificationCenter.default.removeObserver(self)
+            timer?.invalidate()
         }
         .contextMenu(
             menuItems: {

@@ -18,6 +18,7 @@ class NotificationManager {
     private init() { }
     
     func postVolumeChanged() {
+        NSLog("Posting volume changed notification")
         NotificationCenter.default.post(
             name: Self.volumeChangedNotification,
             object: self
@@ -25,6 +26,7 @@ class NotificationManager {
     }
     
     func postBrightnessChanged() {
+        NSLog("Posting brightness changed notification")
         NotificationCenter.default.post(
             name: Self.brightnessChangedNotification,
             object: self
@@ -32,9 +34,22 @@ class NotificationManager {
     }
     
     func postBacklightChanged() {
+        NSLog("Posting backlight changed notification")
         NotificationCenter.default.post(
             name: Self.backlightChangedNotification,
             object: self
         )
+    }
+    
+    // Helper method for testing
+    static func triggerVolumeNotification() {
+        NSLog("Manually triggering volume notification")
+        shared.postVolumeChanged()
+    }
+    
+    // Helper method for testing
+    static func triggerBrightnessNotification() {
+        NSLog("Manually triggering brightness notification")
+        shared.postBrightnessChanged()
     }
 }

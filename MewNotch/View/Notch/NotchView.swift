@@ -71,6 +71,18 @@ struct NotchView: View {
                 }
                 .keyboardShortcut("R", modifiers: .command)
                 
+                Divider()
+                
+                Button("Test Volume HUD") {
+                    NotificationManager.triggerVolumeNotification()
+                }
+                
+                Button("Test Brightness HUD") {
+                    NotificationManager.triggerBrightnessNotification()
+                }
+                
+                Divider()
+                
                 Button(
                     "Quit",
                     role: .destructive

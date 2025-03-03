@@ -74,17 +74,24 @@ class CollapsedNotchViewModel: ObservableObject {
     }
     
     @objc private func handleVolumeChanges() {
+        NSLog("Volume change notification received")
+        
         if !MewDefaultsManager.shared.hudEnabled {
+            NSLog("HUD is disabled in settings, not showing volume indicator")
             return
         }
         
+        NSLog("Showing volume HUD")
         withAnimation {
             hudIcon = MewNotch.Assets.iconSpeaker
             
             if VolumeManager.shared.isMuted() {
+                NSLog("System is muted, setting volume to 0")
                 self.hudValue = 0.0
             } else {
-                self.hudValue = VolumeManager.shared.getOutputVolume()
+                let volume = VolumeManager.shared.getOutputVolume()
+                NSLog("Current volume: \(volume)")
+                self.hudValue = volume
             }
         }
         

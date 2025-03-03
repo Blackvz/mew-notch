@@ -15,9 +15,11 @@ class VolumeManager {
 
     func isMuted() -> Bool {
         do {
-            return try AppleScriptRunner.shared.run(
+            let result = try AppleScriptRunner.shared.run(
                 script: "return output muted of (get volume settings)"
-            ) == "true"
+            )
+            NSLog("Mute check result: \(result)")
+            return result == "true"
         } catch {
             NSLog(
                 "Error while trying to retrieve muted properties of device: \(error). Returning default value false."
@@ -29,20 +31,23 @@ class VolumeManager {
 
     func getOutputVolume() -> Float {
         do {
-            if let volumeStr = Float(
-                try AppleScriptRunner.shared.run(
-                    script: "return output volume of (get volume settings)"
-                )
-            ) {
-                return volumeStr / 100
+            let scriptResult = try AppleScriptRunner.shared.run(
+                script: "return output volume of (get volume settings)"
+            )
+            NSLog("Volume AppleScript result: \(scriptResult)")
+            
+            if let volumeStr = Float(scriptResult) {
+                let normalizedVolume = volumeStr / 100
+                NSLog("Normalized volume: \(normalizedVolume)")
+                return normalizedVolume
             } else {
                 NSLog(
-                    "Error while trying to parse volume string value. Returning default volume value 1."
+                    "Error while trying to parse volume string value. Returning default volume value 0.01."
                 )
             }
         } catch {
             NSLog(
-                "Error while trying to retrieve volume properties of device: \(error). Returning default volume value 1."
+                "Error while trying to retrieve volume properties of device: \(error). Returning default volume value 0.01."
             )
         }
         

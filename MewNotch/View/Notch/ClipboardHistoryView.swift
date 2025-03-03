@@ -110,6 +110,9 @@ struct ClipboardItemView: View {
                 isCopied = false
             }
         }
+        
+        // Close the clipboard menu
+        NotificationCenter.default.post(name: .closeClipboardMenu, object: nil)
     }
     
     private func timeAgo(from date: Date) -> String {

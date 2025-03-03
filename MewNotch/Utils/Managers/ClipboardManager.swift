@@ -8,6 +8,10 @@
 import Foundation
 import AppKit
 
+extension Notification.Name {
+    static let closeClipboardMenu = Notification.Name("closeClipboardMenu")
+}
+
 class ClipboardManager: ObservableObject {
     static let shared = ClipboardManager()
     

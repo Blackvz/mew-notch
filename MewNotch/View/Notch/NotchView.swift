@@ -18,6 +18,19 @@ struct NotchView: View {
     
     @ObservedObject private var clipboardManager = ClipboardManager.shared
     
+    init() {
+        // Register for clipboard menu close notification
+        NotificationCenter.default.addObserver(
+            forName: .closeClipboardMenu,
+            object: nil,
+            queue: .main
+        ) { _ in
+            withAnimation {
+                self.isHovered = false
+            }
+        }
+    }
+    
     var body: some View {
         ZStack(alignment: .top) {
             // Main content

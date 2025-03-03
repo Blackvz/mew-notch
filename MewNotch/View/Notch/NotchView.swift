@@ -18,18 +18,7 @@ struct NotchView: View {
     
     @ObservedObject private var clipboardManager = ClipboardManager.shared
     
-    init() {
-        // Register for clipboard menu close notification
-        NotificationCenter.default.addObserver(
-            forName: .closeClipboardMenu,
-            object: nil,
-            queue: .main
-        ) { _ in
-            withAnimation {
-                self.isHovered = false
-            }
-        }
-    }
+    // We'll use onAppear instead of init for notification setup
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -74,6 +63,25 @@ struct NotchView: View {
                 }
                 .transition(.opacity)
             }
+        }
+        .onAppear {
+            // Set up notification observer for clipboard menu close
+            NotificationCenter.default.addObserver(
+                forName: .closeClipboardMenu,
+                object: nil,
+                queue: .main
+            ) { _ in
+                // Use DispatchQueue to update the state on the main thread
+                DispatchQueue.main.async {
+                    withAnimation {
+                        isHovered = false
+                    }
+                }
+            }
+        }
+        .onDisappear {
+            // Remove observer when view disappears
+            NotificationCenter.default.removeObserver(self)
         }
         .contextMenu(
             menuItems: {

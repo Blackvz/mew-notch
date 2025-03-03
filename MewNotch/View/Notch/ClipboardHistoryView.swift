@@ -12,24 +12,39 @@ struct ClipboardHistoryView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text("Clipboard History")
-                .font(.headline)
-                .foregroundColor(.white)
-                .padding(.horizontal, 10)
-                .padding(.top, 10)
-                .padding(.bottom, 5)
+            HStack {
+                Text("Clipboard History")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                
+                Spacer()
+                
+                Text("Click to copy")
+                    .font(.caption)
+                    .foregroundColor(.gray)
+            }
+            .padding(.horizontal, 10)
+            .padding(.top, 10)
+            .padding(.bottom, 5)
             
             Divider()
                 .background(Color.white.opacity(0.3))
             
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    ForEach(clipboardManager.clipboardItems) { item in
-                        ClipboardItemView(item: item)
+            if clipboardManager.clipboardItems.isEmpty {
+                Text("No clipboard items")
+                    .foregroundColor(.gray)
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .center)
+            } else {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 2) {
+                        ForEach(clipboardManager.clipboardItems) { item in
+                            ClipboardItemView(item: item)
+                        }
                     }
                 }
+                .frame(maxHeight: 300)
             }
-            .frame(maxHeight: 300)
         }
         .frame(width: 300)
         .background(Color.black.opacity(0.95))
@@ -45,6 +60,7 @@ struct ClipboardHistoryView: View {
 struct ClipboardItemView: View {
     let item: ClipboardManager.ClipboardItem
     @State private var isHovered = false
+    @State private var isCopied = false
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -53,9 +69,20 @@ struct ClipboardItemView: View {
                 .font(.system(size: 14))
                 .foregroundColor(.white)
             
-            Text(timeAgo(from: item.timestamp))
-                .font(.system(size: 10))
-                .foregroundColor(.gray)
+            HStack {
+                Text(timeAgo(from: item.timestamp))
+                    .font(.system(size: 10))
+                    .foregroundColor(.gray)
+                
+                Spacer()
+                
+                if isCopied {
+                    Text("Copied!")
+                        .font(.system(size: 10))
+                        .foregroundColor(.green)
+                        .transition(.opacity)
+                }
+            }
         }
         .padding(10)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -65,7 +92,23 @@ struct ClipboardItemView: View {
             isHovered = hovering
         }
         .onTapGesture {
-            ClipboardManager.shared.copyToClipboard(item.text)
+            copyItemToClipboard()
+        }
+    }
+    
+    private func copyItemToClipboard() {
+        ClipboardManager.shared.copyToClipboard(item.text)
+        
+        // Show copied indicator
+        withAnimation {
+            isCopied = true
+        }
+        
+        // Hide copied indicator after 2 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            withAnimation {
+                isCopied = false
+            }
         }
     }
     

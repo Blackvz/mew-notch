@@ -49,6 +49,12 @@ struct NotchView: View {
                         Spacer()
                         ClipboardHistoryView()
                             .offset(y: 40) // Position below the notch
+                            .onHover { hovering in
+                                // Keep the hover state true when hovering over the clipboard history
+                                if hovering {
+                                    self.isHovered = true
+                                }
+                            }
                         Spacer()
                     }
                     Spacer()

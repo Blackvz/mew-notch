@@ -101,5 +101,12 @@ class ClipboardManager: ObservableObject {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.setString(text, forType: .string)
+        
+        // Move this item to the top of the list
+        if let index = clipboardItems.firstIndex(where: { $0.text == text }) {
+            let item = clipboardItems.remove(at: index)
+            clipboardItems.insert(ClipboardItem(text: text, timestamp: Date()), at: 0)
+            print("Moved item to top of clipboard history: \(text.prefix(20))...")
+        }
     }
 }

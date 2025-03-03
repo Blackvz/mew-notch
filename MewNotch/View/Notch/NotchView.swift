@@ -16,17 +16,26 @@ struct NotchView: View {
     
     @State var timer: Timer? = nil
     
+    @StateObject private var clipboardManager = ClipboardManager.shared
+    
     var body: some View {
         VStack {
             HStack {
                 Spacer()
                 
-                CollapsedNotchView(
-                    isHovered: isHovered
-                )
-                .onHover { isHovered in
-                    withAnimation {
-                        self.isHovered = isHovered
+                VStack(spacing: 0) {
+                    CollapsedNotchView(
+                        isHovered: isHovered
+                    )
+                    .onHover { isHovered in
+                        withAnimation {
+                            self.isHovered = isHovered
+                        }
+                    }
+                    
+                    if isHovered && !clipboardManager.clipboardItems.isEmpty {
+                        ClipboardHistoryView()
+                            .transition(.move(edge: .top).combined(with: .opacity))
                     }
                 }
                     

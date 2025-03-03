@@ -8,6 +8,8 @@
 import SwiftUI
 
 class CollapsedNotchViewModel: ObservableObject {
+    // Clipboard history state
+    @Published var showClipboardHistory: Bool = false
     
     @Published var notchSize: CGSize = .zero
     var extraNotchPadSize: CGSize = .init(
@@ -32,6 +34,9 @@ class CollapsedNotchViewModel: ObservableObject {
         }
         
         self.startListeners()
+        
+        // Start clipboard monitoring
+        ClipboardManager.shared.startMonitoring()
     }
     
     func refreshNotchSize() {
@@ -53,6 +58,7 @@ class CollapsedNotchViewModel: ObservableObject {
     
     func stopListeners() {
         NotificationCenter.default.removeObserver(self)
+        ClipboardManager.shared.stopMonitoring()
     }
     
     private func startListeningForVolumeChanges() {

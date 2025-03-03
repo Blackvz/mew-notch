@@ -145,6 +145,9 @@ struct CollapsedNotchView: View {
             } else {
                 OSDUIManager.shared.start()
             }
+            
+            // Ensure clipboard monitoring is active
+            ClipboardManager.shared.startMonitoring()
         }
     }
 }

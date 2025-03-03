@@ -29,6 +29,9 @@ class MewAppDelegate: NSObject, NSApplicationDelegate {
     func applicationWillTerminate(
         _ notification: Notification
     ) {
+        // Stop monitoring system volume changes
+        SystemVolumeMonitor.shared.stopMonitoring()
+        
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -38,6 +41,9 @@ class MewAppDelegate: NSObject, NSApplicationDelegate {
         if MewDefaultsManager.shared.hudEnabled {
             OSDUIManager.shared.stop()
         }
+        
+        // Start monitoring system volume changes
+        SystemVolumeMonitor.shared.startMonitoring()
         
         mediaKeyTap = MediaKeyTap(
             delegate: self

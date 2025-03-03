@@ -8,10 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		9E903D0E2D6E54D8004BFD02 /* MediaKeyTap in Frameworks */ = {isa = PBXBuildFile; productRef = 9E903D0D2D6E54D8004BFD02 /* MediaKeyTap */; };
+		9E903D0F2D6F1234004BFD02 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E903D102D6F1234004BFD02 /* CoreAudio.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		9EA41D872D6DEACA00817679 /* MewNotch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MewNotch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9E903D102D6F1234004BFD02 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -28,6 +30,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E903D0E2D6E54D8004BFD02 /* MediaKeyTap in Frameworks */,
+				9E903D0F2D6F1234004BFD02 /* CoreAudio.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -16,14 +16,14 @@ struct NotchView: View {
     
     @State var timer: Timer? = nil
     
-    @StateObject private var clipboardManager = ClipboardManager.shared
+    @ObservedObject private var clipboardManager = ClipboardManager.shared
     
     var body: some View {
         VStack {
             HStack {
                 Spacer()
                 
-                VStack(spacing: 0) {
+                ZStack(alignment: .top) {
                     CollapsedNotchView(
                         isHovered: isHovered
                     )
@@ -35,7 +35,9 @@ struct NotchView: View {
                     
                     if isHovered && !clipboardManager.clipboardItems.isEmpty {
                         ClipboardHistoryView()
-                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .offset(y: 30) // Position below the notch
+                            .transition(.opacity)
+                            .zIndex(100)
                     }
                 }
                     
@@ -88,6 +90,13 @@ struct NotchView: View {
                 
                 Button("Test Brightness HUD") {
                     NotificationManager.triggerBrightnessNotification()
+                }
+                
+                Button("Debug Clipboard") {
+                    print("Current clipboard items: \(clipboardManager.clipboardItems.count)")
+                    for (index, item) in clipboardManager.clipboardItems.enumerated() {
+                        print("Item \(index): \(item.text.prefix(30))...")
+                    }
                 }
                 
                 Divider()

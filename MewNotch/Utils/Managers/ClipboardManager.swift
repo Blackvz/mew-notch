@@ -63,6 +63,9 @@ class ClipboardManager: ObservableObject {
         // Create new item
         let newItem = ClipboardItem(text: text, timestamp: Date())
         
+        // Debug print
+        print("Adding clipboard item: \(text.prefix(20))... Total items: \(clipboardItems.count + 1)")
+        
         // Remove duplicate if exists
         clipboardItems.removeAll(where: { $0.text == text })
         

@@ -36,7 +36,10 @@ class CollapsedNotchViewModel: ObservableObject {
         self.startListeners()
         
         // Start clipboard monitoring
-        ClipboardManager.shared.startMonitoring()
+        DispatchQueue.main.async {
+            ClipboardManager.shared.startMonitoring()
+            print("Clipboard monitoring started")
+        }
     }
     
     func refreshNotchSize() {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ClipboardHistoryView: View {
-    @StateObject private var clipboardManager = ClipboardManager.shared
+    @ObservedObject private var clipboardManager = ClipboardManager.shared
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -32,11 +32,13 @@ struct ClipboardHistoryView: View {
             .frame(maxHeight: 300)
         }
         .frame(width: 300)
-        .background(Color.black)
+        .background(Color.black.opacity(0.95))
         .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.white.opacity(0.2), lineWidth: 1)
+        )
         .shadow(color: .white.opacity(0.3), radius: 5)
-        .padding(.top, 5)
-        .animation(.easeInOut, value: clipboardManager.clipboardItems.count)
     }
 }
 

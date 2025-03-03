@@ -34,10 +34,20 @@ class ClipboardManager: ObservableObject {
         // Get initial clipboard content
         checkClipboard()
         
+        // Add test items for debugging
+        addTestItems()
+        
         // Set up timer to check clipboard periodically
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
             self?.checkClipboard()
         }
+    }
+    
+    private func addTestItems() {
+        // Add some test items to ensure the clipboard history works
+        addClipboardItem("Test clipboard item 1")
+        addClipboardItem("Test clipboard item 2")
+        addClipboardItem("Test clipboard item 3")
     }
     
     func stopMonitoring() {

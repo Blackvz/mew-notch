@@ -19,33 +19,42 @@ struct NotchView: View {
     @ObservedObject private var clipboardManager = ClipboardManager.shared
     
     var body: some View {
-        VStack {
-            HStack {
-                Spacer()
-                
-                VStack(spacing: 0) {
+        ZStack(alignment: .top) {
+            // Main content
+            VStack {
+                HStack {
+                    Spacer()
+                    
                     CollapsedNotchView(
                         isHovered: isHovered
                     )
-                    .onHover { isHovered in
-                        print("Notch hover state changed to: \(isHovered)")
+                    .onHover { hovering in
+                        print("Notch hover state changed to: \(hovering)")
                         print("Current clipboard items: \(clipboardManager.clipboardItems.count)")
                         withAnimation(.easeInOut(duration: 0.2)) {
-                            self.isHovered = isHovered
+                            self.isHovered = hovering
                         }
                     }
                     
-                    if isHovered && !clipboardManager.clipboardItems.isEmpty {
-                        ClipboardHistoryView()
-                            .transition(.opacity)
-                    }
+                    Spacer()
                 }
-                    
                 
                 Spacer()
             }
             
-            Spacer()
+            // Clipboard history overlay
+            if isHovered && !clipboardManager.clipboardItems.isEmpty {
+                VStack {
+                    HStack {
+                        Spacer()
+                        ClipboardHistoryView()
+                            .offset(y: 40) // Position below the notch
+                        Spacer()
+                    }
+                    Spacer()
+                }
+                .transition(.opacity)
+            }
         }
         .contextMenu(
             menuItems: {
